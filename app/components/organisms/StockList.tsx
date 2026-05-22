@@ -15,14 +15,14 @@ const Table = styled.table`
   font-family:
     "Inter", "Helvetica Neue", Arial, "Hiragino Sans", "Meiryo", sans-serif;
 `;
-const Th = styled.th<{ sortable?: boolean }>`
+const Th = styled.th<{ $sortable?: boolean }>`
   padding: 1.1rem 1.3rem;
   background: #f3f7fb;
   color: #1a2233;
   font-weight: 700;
   font-size: 16px;
   border-bottom: 2px solid #e3eaf3;
-  cursor: ${({ sortable }) => (sortable ? "pointer" : "default")};
+  cursor: ${({ $sortable }) => ($sortable ? "pointer" : "default")};
   user-select: none;
   white-space: nowrap;
   letter-spacing: 0.01em;
@@ -131,7 +131,7 @@ export default function StockList({
           {columns.map((col) => (
             <Th
               key={col.key}
-              sortable={true}
+              $sortable={true}
               onClick={() => handleSort(col.key)}
               style={{
                 background: "#f7fafd",
