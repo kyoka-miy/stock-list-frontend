@@ -14,7 +14,15 @@ export function usePut<T = any, R = any>(
       setLoading(true);
       setError(null);
       try {
-        const res = await axios.put<R>(url, body, config);
+        const token = localStorage.getItem("jwt");
+        const mergedConfig: AxiosRequestConfig = {
+          ...config,
+          headers: {
+            ...(config?.headers ?? {}),
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        };
+        const res = await axios.put<R>(url, body, mergedConfig);
         setData(res.data);
         return res.data;
       } catch (err) {

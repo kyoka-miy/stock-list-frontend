@@ -11,7 +11,16 @@ export function useDelete<R = any>(url: string, config?: AxiosRequestConfig) {
       setLoading(true);
       setError(null);
       try {
-        const mergedConfig = { ...config, ...overrideConfig };
+        const token = localStorage.getItem("jwt");
+        const mergedConfig: AxiosRequestConfig = {
+          ...config,
+          ...overrideConfig,
+          headers: {
+            ...(config?.headers ?? {}),
+            ...(overrideConfig?.headers ?? {}),
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        };
         const res = await axios.delete<R>(url, mergedConfig);
         setData(res.data);
         return res.data;

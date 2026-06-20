@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios, { AxiosRequestConfig } from "axios";
 
 type Props = {
@@ -7,26 +7,30 @@ type Props = {
   shouldFetch?: boolean;
 };
 
-export function useGet<T = any>({ url, query = "", shouldFetch = false }: Props) {
+export function useGet<T = any>({
+  url,
+  query = "",
+  shouldFetch = false,
+}: Props) {
   const [data, setData] = useState<T>(null as any);
   const [isLoading, setIsLoading] = useState(true);
 
   const refetch = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`${url}?q=${encodeURIComponent(query)}`, {
-        method: "GET",
+      const token = localStorage.getItem("jwt");
+      const config: AxiosRequestConfig = {
+        params: {
+          q: query,
+        },
         headers: {
           "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-      });
-      const result = await response.json();
-      if (response.ok) {
-        setData(result as T);
-      } else {
-        throw new Error(result.message || "");
-      }
-      return result as T;
+      };
+      const response = await axios.get<T>(url, config);
+      setData(response.data);
+      return response.data;
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "An error occurred";
       console.error("Error fetching data:", errorMessage);

@@ -9,7 +9,10 @@ import { ENDPOINTS } from "@/app/constants/endpointConstants";
 import { useGet } from "@/app/hooks/useGet";
 import { useDelete } from "@/app/hooks/useDelete";
 import { SearchBoxCard } from "../organisms/SearchBoxCard";
-import { StockInfoWithPage } from "@/app/api-interface/stock";
+import { StockInfo, StockInfoWithPage } from "@/app/api-interface/stock";
+import { StockDetailModal } from "../organisms/StockDetailModal";
+import { GoogleLogin } from "@react-oauth/google";
+import { usePost } from "@/app/hooks/usePost";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -47,10 +50,11 @@ export default function StockListTemplate() {
   >([]);
   const [selectedListId, setSelectedListId] = useState<number>();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [selectedStock, setSelectedStock] = useState<StockInfo | null>(null);
 
   const { data: stockListsWithCountData, refetch: refetchStockListsWithCount } =
     useGet<StockListWithCount[]>({
-      url: ENDPOINTS.STOCK_LISTS_WITH_COUNT("2"),
+      url: ENDPOINTS.STOCK_LISTS_WITH_COUNT,
       shouldFetch: true,
     });
 
@@ -99,6 +103,16 @@ export default function StockListTemplate() {
     refetchStocks();
   };
 
+  const { post: login, data } = usePost(ENDPOINTS.AUTH_GOOGLE);
+
+  useEffect(() => {
+    if (data) {
+      console.log("Logged in with access token:", data.access_token);
+      localStorage.setItem("jwt", data.access_token);
+
+    }
+  }, [data]);
+
   return (
     <Wrapper>
       <div
@@ -108,6 +122,15 @@ export default function StockListTemplate() {
           padding: "2.5rem 2rem 0 2rem",
         }}
       >
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+            login({ id_token: credentialResponse.credential });
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        />
         <div style={{ marginBottom: 8 }}>
           <h1
             style={{ fontSize: 28, fontWeight: 700, margin: 0, color: "#222" }}
@@ -132,9 +155,15 @@ export default function StockListTemplate() {
         />
         <StockList
           stockInfoWithPage={stockInfoWithPage}
-          onSelect={() => {}}
+          onSelect={(stock) => setSelectedStock(stock)}
           onRemoveStock={(stock) => handleRemoveStockFromList(stock.symbol)}
         />
+        {selectedStock && (
+          <StockDetailModal
+            stock={selectedStock}
+            onClose={() => setSelectedStock(null)}
+          />
+        )}
         {showDeletePopup && (
           <ModalOverlay>
             <ModalContent>
