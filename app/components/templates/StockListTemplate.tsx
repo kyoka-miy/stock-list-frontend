@@ -108,7 +108,7 @@ export default function StockListTemplate() {
   useEffect(() => {
     if (data) {
       console.log("Logged in with access token:", data.access_token);
-      localStorage.setItem("jwt", data.access_token);
+      localStorage.setItem("access_token", data.access_token);
 
     }
   }, [data]);

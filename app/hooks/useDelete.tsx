@@ -11,10 +11,11 @@ export function useDelete<R = any>(url: string, config?: AxiosRequestConfig) {
       setLoading(true);
       setError(null);
       try {
-        const token = localStorage.getItem("jwt");
+        const token = localStorage.getItem("access_token");
         const mergedConfig: AxiosRequestConfig = {
           ...config,
           ...overrideConfig,
+          withCredentials: config?.withCredentials ?? true,
           headers: {
             ...(config?.headers ?? {}),
             ...(overrideConfig?.headers ?? {}),
@@ -22,6 +23,10 @@ export function useDelete<R = any>(url: string, config?: AxiosRequestConfig) {
           },
         };
         const res = await axios.delete<R>(url, mergedConfig);
+        const newAccessToken = res.headers["X-New-Access-Token"];
+        if (newAccessToken) {
+          localStorage.setItem("access_token", newAccessToken);
+        }
         setData(res.data);
         return res.data;
       } catch (err) {

@@ -18,7 +18,7 @@ export function useGet<T = any>({
   const refetch = useCallback(async () => {
     try {
       setIsLoading(true);
-      const token = localStorage.getItem("jwt");
+      const token = localStorage.getItem("access_token");
       const config: AxiosRequestConfig = {
         params: {
           q: query,
@@ -27,8 +27,13 @@ export function useGet<T = any>({
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
+        withCredentials: true,
       };
       const response = await axios.get<T>(url, config);
+      const newAccessToken = response.headers["X-New-Access-Token"];
+      if (newAccessToken) {
+        localStorage.setItem("access_token", newAccessToken);
+      }
       setData(response.data);
       return response.data;
     } catch (e) {
