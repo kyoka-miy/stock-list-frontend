@@ -24,7 +24,7 @@ export function usePut<T = any, R = any>(
           withCredentials: config?.withCredentials ?? true,
         };
         const res = await axios.put<R>(url, body, mergedConfig);
-        const newAccessToken = res.headers["X-New-Access-Token"];
+        const newAccessToken = res.headers["x-new-access-token"];
         console.log("newAccessToken:", newAccessToken);
         if (newAccessToken) {
           localStorage.setItem("access_token", newAccessToken);

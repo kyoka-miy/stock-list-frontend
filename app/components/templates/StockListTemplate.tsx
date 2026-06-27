@@ -11,8 +11,6 @@ import { useDelete } from "@/app/hooks/useDelete";
 import { SearchBoxCard } from "../organisms/SearchBoxCard";
 import { StockInfo, StockInfoWithPage } from "@/app/api-interface/stock";
 import { StockDetailModal } from "../organisms/StockDetailModal";
-import { GoogleLogin } from "@react-oauth/google";
-import { usePost } from "@/app/hooks/usePost";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -103,16 +101,6 @@ export default function StockListTemplate() {
     refetchStocks();
   };
 
-  const { post: login, data } = usePost(ENDPOINTS.AUTH_GOOGLE);
-
-  useEffect(() => {
-    if (data) {
-      console.log("Logged in with access token:", data.access_token);
-      localStorage.setItem("access_token", data.access_token);
-
-    }
-  }, [data]);
-
   return (
     <Wrapper>
       <div
@@ -122,15 +110,6 @@ export default function StockListTemplate() {
           padding: "2.5rem 2rem 0 2rem",
         }}
       >
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-            login({ id_token: credentialResponse.credential });
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
-        />
         <div style={{ marginBottom: 8 }}>
           <h1
             style={{ fontSize: 28, fontWeight: 700, margin: 0, color: "#222" }}

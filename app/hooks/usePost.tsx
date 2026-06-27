@@ -24,7 +24,7 @@ export function usePost<T = any, R = any>(
           },
         };
         const res = await axios.post<R>(url, body, mergedConfig);
-        const newAccessToken = res.headers["X-New-Access-Token"];
+        const newAccessToken = res.headers["x-new-access-token"];
         if (newAccessToken) {
           localStorage.setItem("access_token", newAccessToken);
         }

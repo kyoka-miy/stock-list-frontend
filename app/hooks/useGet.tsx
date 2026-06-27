@@ -30,7 +30,7 @@ export function useGet<T = any>({
         withCredentials: true,
       };
       const response = await axios.get<T>(url, config);
-      const newAccessToken = response.headers["X-New-Access-Token"];
+      const newAccessToken = response.headers["x-new-access-token"];
       if (newAccessToken) {
         localStorage.setItem("access_token", newAccessToken);
       }
