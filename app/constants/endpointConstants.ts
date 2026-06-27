@@ -7,4 +7,5 @@ export const ENDPOINTS = {
   STOCK_LISTS_WITH_COUNT: `${endpointBase}/stock-lists/count`,
   STOCKS_SEARCH: `${endpointBase}/stocks/search`,
   AUTH_GOOGLE: `${endpointBase}/auth/google`,
+  AUTH_LOGOUT: `${endpointBase}/auth/logout`,
 };

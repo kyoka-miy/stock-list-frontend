@@ -1,12 +1,10 @@
 "use client";
 
+import { ENDPOINTS } from "@/app/constants/endpointConstants";
+import { usePost } from "@/app/hooks/usePost";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-
-type Props = {
-  onLogin: (credentialResponse: CredentialResponse) => void;
-  onError: () => void;
-};
 
 const floatIn = keyframes`
   from {
@@ -171,7 +169,36 @@ const LoginArea = styled.div`
   justify-content: center;
 `;
 
-export default function LoginTemplate({ onLogin, onError }: Props) {
+type GoogleAuthResponse = {
+  access_token: string;
+  name: string;
+  email: string;
+};
+
+type Props = {
+  setIsLoggedIn: (value: boolean) => void;
+};
+
+export default function LoginTemplate({ setIsLoggedIn }: Props) {
+  const { post: login, data } = usePost<
+    { id_token: string },
+    GoogleAuthResponse
+  >(ENDPOINTS.AUTH_GOOGLE);
+
+  const onLogin = (credentialResponse: CredentialResponse) => {
+    if (!credentialResponse.credential) return;
+    login({ id_token: credentialResponse.credential });
+  };
+
+  useEffect(() => {
+    if (data?.access_token) {
+      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("name", data.name);
+      localStorage.setItem("email", data.email);
+      setIsLoggedIn(true);
+    }
+  }, [data, setIsLoggedIn]);
+
   return (
     <Page>
       <Shell>
@@ -202,7 +229,7 @@ export default function LoginTemplate({ onLogin, onError }: Props) {
           <Card>
             <CardTitle>Googleアカウントでログイン</CardTitle>
             <LoginArea>
-              <GoogleLogin onSuccess={onLogin} onError={onError} />
+              <GoogleLogin onSuccess={onLogin} />
             </LoginArea>
           </Card>
         </Panel>

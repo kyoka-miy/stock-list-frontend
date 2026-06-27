@@ -11,6 +11,7 @@ import { useDelete } from "@/app/hooks/useDelete";
 import { SearchBoxCard } from "../organisms/SearchBoxCard";
 import { StockInfo, StockInfoWithPage } from "@/app/api-interface/stock";
 import { StockDetailModal } from "../organisms/StockDetailModal";
+import Header from "../organisms/Header";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -110,16 +111,7 @@ export default function StockListTemplate() {
           padding: "2.5rem 2rem 0 2rem",
         }}
       >
-        <div style={{ marginBottom: 8 }}>
-          <h1
-            style={{ fontSize: 28, fontWeight: 700, margin: 0, color: "#222" }}
-          >
-            株式ウォッチリスト
-          </h1>
-          <div style={{ color: "#666", fontSize: 16, marginTop: 4 }}>
-            気になる銘柄を追加して、重要指標を一覧で比較できます
-          </div>
-        </div>
+        <Header />
         <StockListTags
           stockListsWithCount={stockListsWithCount}
           setStockListsWithCount={setStockListsWithCount}
