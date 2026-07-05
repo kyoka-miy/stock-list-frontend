@@ -13,4 +13,8 @@ export const ENDPOINTS = {
     `${endpointBase}/stocks/${symbol}/price-history?period=${period}&interval=${interval}`,
   STOCK_DIVIDEND_HISTORY: (symbol: string, years = 6) =>
     `${endpointBase}/stocks/${symbol}/dividend-history?years=${years}`,
+  STOCK_CASHFLOW_HISTORY: (symbol: string, years = 6) =>
+    `${endpointBase}/stocks/${symbol}/cashflow-history?years=${years}`,
+  STOCK_PERFORMANCE_HISTORY: (symbol: string, years = 6) =>
+    `${endpointBase}/stocks/${symbol}/performance-history?years=${years}`,
 };

@@ -5,6 +5,8 @@ import { StockInfo } from "@/app/api-interface/stock";
 import { StockPriceChart } from "./StockPriceChart";
 import { StockDividendChart } from "./StockDividendChart";
 import { StockBasicIndicators } from "./StockBasicIndicators";
+import { StockCashflowChart } from "./StockCashflowChart";
+import { StockPerformanceChart } from "./StockPerformanceChart";
 
 type Props = {
   stock: StockInfo;
@@ -171,6 +173,12 @@ export const StockDetailModal = ({ stock, onClose }: Props) => {
           )}
           {activeTab === "配当金" && (
             <StockDividendChart symbol={stock.symbol} />
+          )}
+          {activeTab === "キャッシュフロー" && (
+            <StockCashflowChart symbol={stock.symbol} />
+          )}
+          {activeTab === "業績" && (
+            <StockPerformanceChart symbol={stock.symbol} />
           )}
           {activeTab === "基本指標" && <StockBasicIndicators stock={stock} />}
         </DetailBody>

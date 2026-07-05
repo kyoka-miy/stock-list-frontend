@@ -95,3 +95,32 @@ export type DividendHistoryPointSchema = {
   dividend_yield: number | null;
   payout_ratio: number | null;
 };
+
+export type CashflowHistoryPointSchema = {
+  year: number;
+  operating_cashflow: number | null;
+  investing_cashflow: number | null;
+  financing_cashflow: number | null;
+};
+
+export type StockCashflowHistoryResponse = {
+  symbol: string;
+  years: number;
+  points: CashflowHistoryPointSchema[];
+};
+
+export type PerformanceHistoryPointSchema = {
+  year: number;
+  revenue: number | null;
+  operating_income: number | null;
+  net_income: number | null;
+};
+
+export type StockPerformanceHistoryResponse = {
+  symbol: string;
+  years: number;
+  points: PerformanceHistoryPointSchema[];
+  revenue_growth_percent: number | null;
+  operating_margin_percent: number | null;
+  net_income_growth_percent: number | null;
+};
