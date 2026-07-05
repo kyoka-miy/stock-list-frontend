@@ -66,7 +66,7 @@ export const StockListTags = ({
   const [editingListId, setEditingListId] = useState<number | null>(null);
   const [editingListName, setEditingListName] = useState("");
 
-  const { post: postList, loading: postLoading } = usePost(
+  const { post: postList } = usePost(
     ENDPOINTS.STOCK_LISTS,
   );
 
@@ -85,11 +85,11 @@ export const StockListTags = ({
     setShowAddPopup(false);
   };
 
-  const { put: putListName, loading: putLoading } = usePut(
+  const { put: putListName } = usePut(
     editingListId ? `${ENDPOINTS.STOCK_LISTS}/${editingListId}` : "",
   );
 
-  const handleUpdateListName = async (id: number) => {
+  const handleUpdateListName = async () => {
     if (!editingListName.trim()) return;
     await putListName({ name: editingListName });
     setEditingListId(null);
@@ -158,7 +158,7 @@ export const StockListTags = ({
                     onClick={async (e) => {
                       e.stopPropagation();
                       if (editingListName.trim()) {
-                        await handleUpdateListName(list.id);
+                        await handleUpdateListName();
                       }
                     }}
                   >
