@@ -1,4 +1,5 @@
 "use client";
+import { forwardRef, InputHTMLAttributes } from "react";
 import styled from "styled-components";
 
 const StyledInput = styled.input`
@@ -16,8 +17,12 @@ const StyledInput = styled.input`
   }
 `;
 
-export default function Input(
-  props: React.InputHTMLAttributes<HTMLInputElement>,
-) {
-  return <StyledInput {...props} />;
-}
+const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
+  (props, ref) => {
+    return <StyledInput ref={ref} {...props} />;
+  },
+);
+
+Input.displayName = "Input";
+
+export default Input;
