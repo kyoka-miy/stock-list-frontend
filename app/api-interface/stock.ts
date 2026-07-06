@@ -1,4 +1,4 @@
-import { Page } from "./page";
+import { Page } from "./pagination";
 
 export type StockSearchCandidate = {
   symbol: string;
