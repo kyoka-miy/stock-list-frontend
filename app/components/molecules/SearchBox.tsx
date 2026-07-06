@@ -80,7 +80,6 @@ const AddButton = styled.button`
   font-weight: 700;
   gap: 4px;
   padding: 0;
-
 `;
 
 const PlusCircle = styled.span`
