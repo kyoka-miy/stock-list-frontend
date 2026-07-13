@@ -17,11 +17,12 @@ const StyledInput = styled.input`
   }
 `;
 
-const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
-  (props, ref) => {
-    return <StyledInput ref={ref} {...props} />;
-  },
-);
+const Input = forwardRef<
+  HTMLInputElement,
+  InputHTMLAttributes<HTMLInputElement>
+>((props, ref) => {
+  return <StyledInput ref={ref} {...props} />;
+});
 
 Input.displayName = "Input";
 
